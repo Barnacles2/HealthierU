@@ -37,5 +37,4 @@ UI (Fragments) → ViewModel → Repository → Room Database
 - Package name `com.example.healthieru`, app name HealthierU.
 - Uses Android Gradle Plugin 9.4.1, which has built-in Kotlin support, so no separate Kotlin plugin is applied.
 
-### Dependencies
-All versions are managed in one place, `gradle/libs.versions.toml` (a Gradle version catalog), so every member builds with identical versions.
+

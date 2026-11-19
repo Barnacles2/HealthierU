@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/tvEmpty"
+            style="@style/BodyMuted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No health data yet. Record your health data to see your report."
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/reportContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvPatient"
+                style="@style/Heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvGoal"
+                style="@style/BodyMuted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:cardBackgroundColor="@color/primary_soft"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="18dp">
+                    <TextView style="@style/BodyMuted" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Body mass index" />
+                    <TextView android:id="@+id/tvBmiValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/primary_dark" android:textSize="36sp" android:textStyle="bold" />
+                    <TextView android:id="@+id/tvBmiCategory" style="@style/SectionTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="1dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="18dp">
+                    <TextView style="@style/BodyMuted" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Resting heart rate" />
+                    <TextView android:id="@+id/tvHeartValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/coral" android:textSize="30sp" android:textStyle="bold" />
+                    <TextView android:id="@+id/tvHeartStatus" style="@style/SectionTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="1dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="18dp">
+                    <TextView style="@style/BodyMuted" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Daily activity level" />
+                    <TextView android:id="@+id/tvActivity" style="@style/SectionTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <Button
+                android:id="@+id/btnRecommendations"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="24dp"
+                android:text="View recommendations" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

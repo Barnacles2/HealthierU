@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">HealthierU</string>
+    <string name="history_values_format">%.1f kg, %d bpm</string>
+    <string name="edit_entry_title">Edit entry for %1$s</string>
+    <string name="error_enter_numbers">Enter a number in both fields.</string>
+    <string name="error_invalid_range">Weight must be 20-300kg, Heart rate 30-220bpm.</string>
+    <string name="entry_updated">Entry updated.</string>
+    <string name="delete_entry_title">Delete this entry?</string>
+    <string name="delete_entry_message">The record for %1$s will be removed from your history and progress chart.</string>
+    <string name="entry_deleted">Entry deleted.</string>
 </resources>

@@ -4,7 +4,7 @@ An Android app that helps users track daily health habits (steps, water intake a
 
 BBIT 3.2 Mobile Application Development, CAT 2
 Health and Wellness for All
-`com.example.healthieru`
+
 
 ## Problem
 Many people struggle to monitor their health consistently because they lack a simple tool to track daily habits like exercise, diet and water intake. This leads to poor awareness of their health status and inconsistent follow-up on fitness goals.

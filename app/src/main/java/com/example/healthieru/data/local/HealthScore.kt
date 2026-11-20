@@ -5,18 +5,17 @@ object HealthScore {
     fun calculateScore(record: HealthRecord): Int {
         var score = 0
 
-        // steps: up to 40 points
-        if (record.steps >= 10000) {
+        // heartRate: up to 40 points (Normal resting is 60-100 bpm)
+        if (record.heartRate in 60..100) {
             score += 40
-        } else if (record.steps >= 5000) {
+        } else if (record.heartRate in 50..110) {
             score += 20
         }
 
-        // water: up to 30 points
-        if (record.waterLitres >= 2.5) {
+        // weight: up to 30 points (Just a placeholder check for healthy weight)
+        // You might want to check BMI instead, but for now, let's give points if weight is recorded
+        if (record.weightKg > 0) {
             score += 30
-        } else if (record.waterLitres >= 1.5) {
-            score += 15
         }
 
         // calories: 30 points if in a healthy range

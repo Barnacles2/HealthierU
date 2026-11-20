@@ -40,6 +40,8 @@
         <activity android:name=".ui.ProfessionalActivity" android:label="Patients" />
         <activity android:name=".ui.PatientDetailActivity" android:label="Patient" />
         <activity android:name=".ui.ProgressActivity" android:label="My progress" />
+        <activity android:name=".ui.HistoryActivity" android:label="My history" />
+        <activity android:name=".ui.ProfileActivity" android:label="My profile" />
     </application>
 
 </manifest>

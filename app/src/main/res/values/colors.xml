@@ -2,4 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="primary">#1B7F6B</color>
+    <color name="primary_dark">#14594B</color>
+    <color name="primary_soft">#E3F2EC</color>
+    <color name="navy">#22334A</color>
+    <color name="muted">#5F6F7A</color>
+    <color name="coral">#E76F51</color>
+    <color name="background">#F6FAF8</color>
 </resources>

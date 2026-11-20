@@ -19,6 +19,7 @@ HealthierU lets users record daily health data, calculates a daily health score 
 
 ## Team
 152568 Kimberly Oware
+168010 Vicky Kanyama
 
 
 ## Features

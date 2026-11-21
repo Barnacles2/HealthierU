@@ -21,6 +21,7 @@ HealthierU lets users record daily health data, calculates a daily health score 
 152568 Kimberly Oware
 168010 Vicky Kanyama
 193490 Allen Murimi
+152890 Benie Mahoro Carla
 
 
 ## Features

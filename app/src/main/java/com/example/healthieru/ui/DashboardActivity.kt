@@ -1,129 +1,91 @@
-
 package com.example.healthieru.ui
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
+import android.view.View
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.lifecycle.Lifecycle
-import com.example.healthieru.HealthierUApp
-import com.example.healthieru.databinding.ActivityDashboardBinding
-import com.example.healthieru.model.AppData
+import com.example.healthieru.R
 import com.example.healthieru.model.HealthReportGenerator
-import com.example.healthieru.viewmodel.HealthViewModel
-import com.example.healthieru.viewmodel.HealthViewModelFactory
+import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
 
 class DashboardActivity : BaseActivity() {
 
-    private lateinit var b: ActivityDashboardBinding
-    private lateinit var healthViewModel: HealthViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_dashboard)
 
-        b = ActivityDashboardBinding.inflate(layoutInflater)
-        setContentView(b.root)
+        // 1. Initialize all TextViews for the Dashboard
+        val tvGreeting = findViewById<TextView>(R.id.tvGreeting)
+        val tvGoal = findViewById<TextView>(R.id.tvGoal)
+        val tvWeight = findViewById<TextView>(R.id.tvWeight)
+        val tvHeart = findViewById<TextView>(R.id.tvHeart)
+        val tvBmi = findViewById<TextView>(R.id.tvBmi)
 
-        // Initialise ViewModel
-        val repository = (application as HealthierUApp).repository
-        val factory = HealthViewModelFactory(repository)
+        // 2. Initialize the Expandable Menu Views
+        val expandedMenu = findViewById<LinearLayout>(R.id.expandedMenuContainer)
+        val btnToggleMenu = findViewById<MaterialButton>(R.id.btnToggleMenu)
 
-        healthViewModel = ViewModelProvider(this, factory)
-            .get(HealthViewModel::class.java)
-
-        // NAVIGATION
-        b.cardProfile.setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
+        // 3. Set up the Expand/Collapse Button logic
+        btnToggleMenu.setOnClickListener {
+            if (expandedMenu.visibility == View.GONE) {
+                expandedMenu.visibility = View.VISIBLE
+                btnToggleMenu.text = "Show Less"
+            } else {
+                expandedMenu.visibility = View.GONE
+                btnToggleMenu.text = "View Progress & History"
+            }
         }
 
-        b.cardRecord.setOnClickListener {
-            startActivity(Intent(this, RecordDataActivity::class.java))
+        // 4. Link the Dashboard Cards to their respective Activities
+        fun link(cardId: Int, target: Class<*>) {
+            findViewById<View>(cardId).setOnClickListener {
+                startActivity(Intent(this, target))
+            }
         }
 
-        b.cardReport.setOnClickListener {
-            startActivity(Intent(this, ReportActivity::class.java))
+        link(R.id.cardRecord, RecordDataActivity::class.java)
+        link(R.id.cardReport, ReportActivity::class.java)
+        link(R.id.cardAdvice, RecommendationsActivity::class.java) // The new notification card
+        link(R.id.cardProgress, ProgressActivity::class.java)
+        link(R.id.cardHistory, HistoryActivity::class.java)
+        link(R.id.cardProfile, ProfileActivity::class.java)
+
+        // 5. Set up Logout Button
+        findViewById<Button>(R.id.btnLogout).setOnClickListener {
+            viewModel.logout()
+            goToLogin()
         }
 
-        b.cardAdvice.setOnClickListener {
-            startActivity(Intent(this, RecommendationsActivity::class.java))
-        }
-
-        b.cardHistory.setOnClickListener {
-            startActivity(Intent(this, HistoryActivity::class.java))
-        }
-
-        b.cardProgress.setOnClickListener {
-            startActivity(Intent(this, ProgressActivity::class.java))
-        }
-
-        // LOGOUT
-        b.btnLogout.setOnClickListener {
-            AppData.currentUser = null
-
-            startActivity(
-                Intent(this, LoginActivity::class.java).addFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK or
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK
-                )
-            )
-        }
-
-        // OBSERVE USER PROFILE THROUGH VIEWMODEL
+        // 6. Collect Data from ViewModel
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                healthViewModel.user.collect { savedUser ->
-
-                    val patient = AppData.currentUser
-                        ?: return@collect
-
-                    // Update greeting and goal
-                    b.tvGreeting.text =
-                        "Hello, ${patient.name.substringBefore(' ')}"
-
-                    b.tvGoal.text = "Goal: ${patient.healthGoal}"
-
-                    if (savedUser != null) {
-
-                        // Display saved database information
-                        b.tvWeight.text =
-                            "%.1f kg".format(savedUser.weight)
-
-                        b.tvHeart.text =
-                            "${savedUser.heartRate} bpm"
-
-                        b.tvBmi.text =
-                            "%.1f".format(savedUser.bmi)
-
-                        // Synchronise AppData for other existing screens
-                        patient.weightKg = savedUser.weight
-                        patient.heightCm = savedUser.height
-                        patient.heartRateBpm = savedUser.heartRate
-
-                    } else {
-
-                        // Fallback when no database profile exists
-                        if (patient.hasRecords()) {
-
-                            val report =
-                                HealthReportGenerator.generate(patient)
-
-                            b.tvWeight.text =
-                                "%.1f kg".format(patient.getWeight())
-
-                            b.tvHeart.text =
-                                "${patient.getHeartRate()} bpm"
-
-                            b.tvBmi.text =
-                                "%.1f".format(report.bmi)
-
+                // Collect User Info (Greeting and Goal)
+                launch {
+                    viewModel.currentUser.collect { user ->
+                        if (user != null) {
+                            tvGreeting.text = "Hello, ${user.name.substringBefore(' ')}"
+                            tvGoal.text = "Goal: ${user.healthGoal}"
+                        }
+                    }
+                }
+                // Collect Health Records (Stats)
+                launch {
+                    viewModel.records.collect { list ->
+                        val latest = list.lastOrNull()
+                        if (latest == null) {
+                            tvWeight.text = "--"
+                            tvHeart.text = "--"
+                            tvBmi.text = "--"
                         } else {
-
-                            b.tvWeight.text = "--"
-                            b.tvHeart.text = "--"
-                            b.tvBmi.text = "--"
+                            tvWeight.text = "%.1f kg".format(latest.weightKg)
+                            tvHeart.text = "${latest.heartRate} bpm"
+                            tvBmi.text = "%.1f".format(HealthReportGenerator.bmi(latest.weightKg, latest.heightCm))
                         }
                     }
                 }

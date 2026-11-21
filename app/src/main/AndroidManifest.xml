@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!--added-->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
@@ -16,16 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthierU">
 
-        <!-- Your original screen, kept but no longer the launcher -->
         <activity
             android:name=".MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- New launcher screen -->
-        <activity
-            android:name=".ui.LoginActivity"
-            android:exported="true">
+        <activity android:name=".ui.LoginActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -37,11 +32,11 @@
         <activity android:name=".ui.RecordDataActivity" android:label="Record health data" />
         <activity android:name=".ui.ReportActivity" android:label="Health report" />
         <activity android:name=".ui.RecommendationsActivity" android:label="Recommendations" />
+        <activity android:name=".ui.HistoryActivity" android:label="My history" />
+        <activity android:name=".ui.ProgressActivity" android:label="My progress" />
+        <activity android:name=".ui.ProfileActivity" android:label="My profile" />
         <activity android:name=".ui.ProfessionalActivity" android:label="Patients" />
         <activity android:name=".ui.PatientDetailActivity" android:label="Patient" />
-        <activity android:name=".ui.ProgressActivity" android:label="My progress" />
-        <activity android:name=".ui.HistoryActivity" android:label="My history" />
-        <activity android:name=".ui.ProfileActivity" android:label="My profile" />
     </application>
 
 </manifest>

@@ -3,46 +3,50 @@ package com.example.healthieru.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import com.example.healthieru.R
-import com.example.healthieru.databinding.ActivityLoginBinding
-import com.example.healthieru.model.AppData
+import com.example.healthieru.model.Doctor // <-- THIS IS THE CRUCIAL IMPORT
+import com.google.android.material.button.MaterialButtonToggleGroup
 
-class LoginActivity : AppCompatActivity() {
-    private lateinit var b: ActivityLoginBinding
+class LoginActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        b = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(b.root)
+        setContentView(R.layout.activity_login)
 
-        b.btnSignIn.setOnClickListener {
-            val email = b.etEmail.text.toString()
-            val password = b.etPassword.text.toString()
-            val isProfessional = b.toggleRole.checkedButtonId == R.id.btnRoleProfessional
+        val etEmail = findViewById<EditText>(R.id.etEmail)
+        val etPassword = findViewById<EditText>(R.id.etPassword)
+        val tvError = findViewById<TextView>(R.id.tvError)
+        val toggle = findViewById<MaterialButtonToggleGroup>(R.id.toggleRole)
 
-            if (isProfessional) {
-                if (AppData.professional.checkLogin(email, password)) {
+        fun showError() {
+            tvError.text = "Incorrect email or password. Check your details and try again."
+            tvError.visibility = View.VISIBLE
+        }
+
+        findViewById<Button>(R.id.btnSignIn).setOnClickListener {
+            val email = etEmail.text.toString()
+            val password = etPassword.text.toString()
+
+            if (toggle.checkedButtonId == R.id.btnRoleProfessional) {
+                if (Doctor.account.checkLogin(email, password)) {
                     startActivity(Intent(this, ProfessionalActivity::class.java))
                     finish()
                 } else showError()
             } else {
-                val patient = AppData.patients.find { it.checkLogin(email, password) }
-                if (patient != null) {
-                    AppData.currentUser = patient
-                    startActivity(Intent(this, DashboardActivity::class.java))
-                    finish()
-                } else showError()
+                viewModel.login(email, password) { ok ->
+                    if (ok) {
+                        startActivity(Intent(this, DashboardActivity::class.java))
+                        finish()
+                    } else showError()
+                }
             }
         }
 
-        b.btnCreateAccount.setOnClickListener {
+        findViewById<Button>(R.id.btnCreateAccount).setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
-    }
-
-    private fun showError() {
-        b.tvError.text = "Incorrect email or password. Check your details and try again."
-        b.tvError.visibility = View.VISIBLE
     }
 }

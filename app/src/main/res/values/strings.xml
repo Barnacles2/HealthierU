@@ -8,4 +8,18 @@
     <string name="delete_entry_title">Delete this entry?</string>
     <string name="delete_entry_message">The record for %1$s will be removed from your history and progress chart.</string>
     <string name="entry_deleted">Entry deleted.</string>
+    <string name="title_patients">Patients</string>
+    <string name="placeholder_doctor_name">Dr. Amina Otieno • General Practitioner</string>
+    <string name="label_your_patients">Your Patients</string>
+    <string name="placeholder_patient_name">Wanjiru Kamau</string>
+    <string name="status_needs_review">Needs Review</string>
+    <string name="placeholder_patient_goal_bmi">Goal: Lose 5 kg • BMI: 26.4</string>
+    <string name="placeholder_last_log">Last log: 72.0 kg, 78 bpm</string>
+    <string name="btn_view_action">View &amp; Action</string>
+    <string name="btn_sign_out">Sign out</string>
+    <string name="doctor_info_format">%1$s • %2$s</string>
+    <string name="patient_goal_format">Goal: %1$s</string>
+    <string name="patient_metrics_format">Last log: %1$f kg, %2$d bpm (BMI: %3$s)</string>
+    <string name="patient_no_metrics">Last log: No data recorded yet</string>
+    <string name="no_patients_found">No patients found.</string>
 </resources>

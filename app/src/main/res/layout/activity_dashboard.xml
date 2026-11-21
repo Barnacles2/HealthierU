@@ -3,30 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F7F6">
+    android:background="#F4F7F6"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="24dp">
 
         <!-- Header Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primary"
+            android:background="#2A9D8F"
             android:orientation="vertical"
             android:paddingStart="24dp"
-            android:paddingTop="40dp"
+            android:paddingTop="48dp"
             android:paddingEnd="24dp"
-            android:paddingBottom="70dp">
+            android:paddingBottom="80dp">
 
             <TextView
                 android:id="@+id/tvGreeting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:textSize="28sp"
+                android:textSize="30sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -34,8 +36,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textColor="#CCFFFFFF"
-                android:textSize="16sp" />
+                android:background="#33FFFFFF"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <!-- Stats Cards (Overlapping Header) -->
@@ -43,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="-50dp"
+            android:layout_marginTop="-56dp"
             android:layout_marginEnd="16dp"
             android:orientation="horizontal"
             android:elevation="8dp">
@@ -56,14 +61,15 @@
                 android:layout_weight="1"
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
+                app:cardElevation="2dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚖️" android:textSize="20sp" />
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Weight" android:textColor="#888888" android:textSize="12sp" />
-                    <TextView android:id="@+id/tvWeight" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:textColor="#1A1A1A" android:textSize="18sp" android:textStyle="bold" />
+                    <TextView android:id="@+id/tvWeight" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textColor="#1A1A1A" android:textSize="18sp" android:textStyle="bold" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -75,14 +81,15 @@
                 android:layout_weight="1"
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
+                app:cardElevation="2dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="❤️" android:textSize="20sp" />
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Heart" android:textColor="#888888" android:textSize="12sp" />
-                    <TextView android:id="@+id/tvHeart" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:textColor="@color/coral" android:textSize="18sp" android:textStyle="bold" />
+                    <TextView android:id="@+id/tvHeart" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textColor="#EF233C" android:textSize="18sp" android:textStyle="bold" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -93,14 +100,15 @@
                 android:layout_weight="1"
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
+                app:cardElevation="2dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📊" android:textSize="20sp" />
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="BMI" android:textColor="#888888" android:textSize="12sp" />
-                    <TextView android:id="@+id/tvBmi" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:textColor="@color/primary" android:textSize="18sp" android:textStyle="bold" />
+                    <TextView android:id="@+id/tvBmi" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textColor="#2A9D8F" android:textSize="18sp" android:textStyle="bold" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
@@ -116,12 +124,47 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:text="My Dashboard"
+                android:text="Quick Menu"
                 android:textColor="#1A1A1A"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <!-- Card: Profile (MOVED TO TOP) -->
+            <!-- NOTIFICATION STYLE CARD: Recommendations (Always Visible) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardAdvice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="#FFF3E0"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#FFB74D"
+                app:strokeWidth="1dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
+                    <!-- Emoji with a badge look -->
+                    <FrameLayout
+                        android:layout_width="40dp"
+                        android:layout_height="40dp">
+                        <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:text="🔔" android:textSize="24sp" />
+                        <!-- Small red dot for notification effect -->
+                        <View
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_gravity="top|end"
+                            android:background="@drawable/bg_notification_dot" />
+                    </FrameLayout>
+
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="New Recommendations!" android:textColor="#E65100" android:textSize="16sp" android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Tap to see your personalized health advice." android:textColor="#BF360C" android:textSize="14sp" />
+                    </LinearLayout>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textColor="#FFB74D" android:textSize="24sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card: Profile -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardProfile"
                 android:layout_width="match_parent"
@@ -132,12 +175,13 @@
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="1dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="20dp">
-                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_menu_person" app:tint="@color/primary" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
+                    <TextView android:layout_width="40dp" android:layout_height="40dp" android:gravity="center" android:text="👤" android:textSize="22sp" android:background="#F0F4F8" />
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:orientation="vertical">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="My Profile" android:textColor="#1A1A1A" android:textSize="16sp" android:textStyle="bold" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Update your details" android:textColor="#888888" android:textSize="14sp" />
                     </LinearLayout>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textColor="#CCCCCC" android:textSize="24sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -152,12 +196,13 @@
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="1dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="20dp">
-                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_menu_edit" app:tint="@color/primary" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
+                    <TextView android:layout_width="40dp" android:layout_height="40dp" android:gravity="center" android:text="📝" android:textSize="22sp" android:background="#F0F4F8" />
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:orientation="vertical">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Record Health Data" android:textColor="#1A1A1A" android:textSize="16sp" android:textStyle="bold" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Log today's metrics" android:textColor="#888888" android:textSize="14sp" />
                     </LinearLayout>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textColor="#CCCCCC" android:textSize="24sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -172,85 +217,88 @@
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="1dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="20dp">
-                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_menu_report" app:tint="@color/primary" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
+                    <TextView android:layout_width="40dp" android:layout_height="40dp" android:gravity="center" android:text="📊" android:textSize="22sp" android:background="#F0F4F8" />
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:orientation="vertical">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Health Report" android:textColor="#1A1A1A" android:textSize="16sp" android:textStyle="bold" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="View your summary" android:textColor="#888888" android:textSize="14sp" />
                     </LinearLayout>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textColor="#CCCCCC" android:textSize="24sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card: Advice -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardAdvice"
+            <!-- COLLAPSIBLE SECTION (Now only contains Progress and History) -->
+            <LinearLayout
+                android:id="@+id/expandedMenuContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="1dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="20dp">
-                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_menu_lightbulb" app:tint="@color/primary" />
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:orientation="vertical">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Recommendations" android:textColor="#1A1A1A" android:textSize="16sp" android:textStyle="bold" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Get health advice" android:textColor="#888888" android:textSize="14sp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <!-- Card: Progress -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardProgress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="1dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="20dp">
-                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_menu_chart" app:tint="@color/primary" />
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:orientation="vertical">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="My Progress" android:textColor="#1A1A1A" android:textSize="16sp" android:textStyle="bold" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="View charts and trends" android:textColor="#888888" android:textSize="14sp" />
+                <!-- Card: Progress -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardProgress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@android:color/white"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="1dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
+                        <TextView android:layout_width="40dp" android:layout_height="40dp" android:gravity="center" android:text="📈" android:textSize="22sp" android:background="#F0F4F8" />
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:orientation="vertical">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="My Progress" android:textColor="#1A1A1A" android:textSize="16sp" android:textStyle="bold" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="View charts and trends" android:textColor="#888888" android:textSize="14sp" />
+                        </LinearLayout>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textColor="#CCCCCC" android:textSize="24sp" />
                     </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card: History -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardHistory"
+                <!-- Card: History -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@android:color/white"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="1dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
+                        <TextView android:layout_width="40dp" android:layout_height="40dp" android:gravity="center" android:text="🕰️" android:textSize="22sp" android:background="#F0F4F8" />
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:orientation="vertical">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="My History" android:textColor="#1A1A1A" android:textSize="16sp" android:textStyle="bold" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Review past entries" android:textColor="#888888" android:textSize="14sp" />
+                        </LinearLayout>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textColor="#CCCCCC" android:textSize="24sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Expand/Collapse Toggle Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnToggleMenu"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="1dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="20dp">
-                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_menu_history" app:tint="@color/primary" />
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:orientation="vertical">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="My History" android:textColor="#1A1A1A" android:textSize="16sp" android:textStyle="bold" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Review past entries" android:textColor="#888888" android:textSize="14sp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                android:layout_marginTop="8dp"
+                android:text="View Progress &amp; History"
+                android:textColor="#2A9D8F" />
 
             <!-- Logout Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLogout"
                 style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="16dp"
                 android:text="Sign out"
-                android:textColor="@color/coral"
-                app:strokeColor="@color/coral" />
+                android:textColor="#EF233C"
+                app:cornerRadius="12dp"
+                app:strokeColor="#EF233C" />
 
         </LinearLayout>
     </LinearLayout>

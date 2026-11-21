@@ -3,110 +3,193 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:background="#F8F9FA"> <!-- Off-white background -->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="24dp">
 
+        <!-- Spacer to push content down slightly -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="48dp" />
+
+        <!-- Header Section -->
         <TextView
             style="@style/Heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Health and wellness monitor" />
+            android:text="Health and wellness monitor"
+            android:textColor="#2B2D42"
+            android:textSize="26sp"
+            android:textStyle="bold" />
 
         <TextView
             style="@style/BodyMuted"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Sign in to track your health." />
+            android:layout_marginTop="8dp"
+            android:text="Sign in to track your health."
+            android:textColor="#6C757D" />
 
+        <!-- Role Toggle (Pill Shape) -->
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/toggleRole"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="32dp"
             app:checkedButton="@id/btnRolePatient"
             app:selectionRequired="true"
             app:singleSelection="true">
 
-            <Button
+            <!-- Using style to create rounded corners for the toggle group -->
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRolePatient"
-                style="?attr/materialButtonOutlinedStyle"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Patient" />
+                android:text="Patient"
+                app:cornerRadius="24dp"
+                app:strokeColor="#E0E0E0"
+                app:strokeWidth="1dp" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRoleProfessional"
-                style="?attr/materialButtonOutlinedStyle"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Health professional" />
+                android:text="Professional"
+                app:cornerRadius="24dp"
+                app:strokeColor="#E0E0E0"
+                app:strokeWidth="1dp" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
+        <!-- Email Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="Email"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxStrokeColor="#2A9D8F">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:inputType="textEmailAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Password Input -->
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Email">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:hint="Password"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxStrokeColor="#2A9D8F"
             app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Error Text -->
         <TextView
             android:id="@+id/tvError"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="@color/coral"
+            android:textColor="#EF233C"
+            android:textSize="12sp"
             android:visibility="gone" />
 
+        <!-- Sign In Button -->
         <Button
             android:id="@+id/btnSignIn"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:layout_marginTop="20dp"
-            android:text="Sign in" />
+            android:layout_marginTop="24dp"
+            android:backgroundTint="#2A9D8F"
+            android:text="Sign in"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp" />
 
+        <!-- Create Account Link -->
         <Button
             android:id="@+id/btnCreateAccount"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create a patient account" />
+            android:layout_marginTop="8dp"
+            android:text="Create a patient account"
+            android:textColor="#2A9D8F" />
 
-        <TextView
-            style="@style/BodyMuted"
-            android:layout_width="wrap_content"
+        <!-- Flexible Spacer to push Demo Credentials to bottom -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Demo Credentials Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Demo patient: wanjiru@mail.com / 1234\nDemo professional: doctor@clinic.com / doctor123" />
+            android:layout_marginTop="32dp"
+            app:cardBackgroundColor="#F1F3F5"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            app:strokeColor="#E0E0E0"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Demo Credentials"
+                    android:textColor="#2B2D42"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Patient: wanjiru@mail.com / 1234"
+                    android:textColor="#6C757D"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Professional: doctor@clinic.com / doctor123"
+                    android:textColor="#6C757D"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
     </LinearLayout>
 </ScrollView>

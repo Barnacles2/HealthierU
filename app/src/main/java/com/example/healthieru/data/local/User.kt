@@ -1,15 +1,18 @@
 package com.example.healthieru.data.local
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.example.healthieru.model.Person
 
-@Entity(tableName = "user")
+@Entity(tableName = "users", indices = [Index(value = ["email"], unique = true)])
 data class User(
-    @PrimaryKey val id: Int = 1,
-    val name: String,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    override val name: String,
+    override val email: String,
+    override val phone: String,
+    val password: String,
     val age: Int,
-    val weight: Double,    // Add this
-    val height: Double,    // Add this
-    val heartRate: Int,    // Add this
-    val bmi: Double        // Add this
-)
+    val healthGoal: String,
+    val followUpStatus: String = "Not reviewed"
+) : Person

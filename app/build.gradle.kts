@@ -44,28 +44,29 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.material)
 
-    // ADDED: Fragment
+    // Fragment
     implementation(libs.androidx.fragment.ktx)
 
-    // ADDED: Room (database)
+    // Room (database)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
-    // ADDED: ViewModel and LiveData
+    // ViewModel and LiveData
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
 
-    // ADDED: Navigation
+    // Needed for lifecycleScope and repeatOnLifecycle in the screens
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0")
+
+    // Navigation
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 
-    // ADDED: WorkManager (reminders)
+    // WorkManager (reminders)
     implementation(libs.androidx.work.runtime.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
-
-    implementation("com.google.android.material:material:1.12.0")
 }

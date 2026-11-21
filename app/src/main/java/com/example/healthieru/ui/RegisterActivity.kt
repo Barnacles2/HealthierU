@@ -2,46 +2,60 @@ package com.example.healthieru.ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
-import com.example.healthieru.databinding.ActivityRegisterBinding
-import com.example.healthieru.model.AppData
-import com.example.healthieru.model.Patient
+import com.example.healthieru.R
+import com.example.healthieru.data.local.User
+import com.example.healthieru.model.Validator
 
 class RegisterActivity : BaseActivity() {
-    private lateinit var b: ActivityRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        b = ActivityRegisterBinding.inflate(layoutInflater)
-        setContentView(b.root)
+        setContentView(R.layout.activity_register)
         enableBack()
 
-        b.btnCreate.setOnClickListener {
-            val name = b.etName.text.toString().trim()
-            val email = b.etEmail.text.toString().trim()
-            val phone = b.etPhone.text.toString().trim()
-            val age = b.etAge.text.toString().toIntOrNull()
-            val goal = b.etGoal.text.toString().trim()
-            val password = b.etPassword.text.toString()
+        val etName = findViewById<EditText>(R.id.etName)
+        val etEmail = findViewById<EditText>(R.id.etEmail)
+        val etPhone = findViewById<EditText>(R.id.etPhone)
+        val etAge = findViewById<EditText>(R.id.etAge)
+        val etGoal = findViewById<EditText>(R.id.etGoal)
+        val etPassword = findViewById<EditText>(R.id.etPassword)
+        val tvError = findViewById<TextView>(R.id.tvError)
+
+        fun showError(message: String) {
+            tvError.text = message
+            tvError.visibility = View.VISIBLE
+        }
+
+        findViewById<Button>(R.id.btnCreate).setOnClickListener {
+            val name = etName.text.toString().trim()
+            val email = etEmail.text.toString().trim()
+            val phone = etPhone.text.toString().trim()
+            val age = etAge.text.toString().toIntOrNull()
+            val goal = etGoal.text.toString().trim()
+            val password = etPassword.text.toString()
 
             val error = when {
-                name.isEmpty() || email.isEmpty() || phone.isEmpty() || goal.isEmpty() ->
-                    "Fill in your name, email, phone number and health goal."
-                age == null || age !in 1..120 -> "Enter an age between 1 and 120."
-                password.length < 4 -> "Use a password with at least 4 characters."
-                AppData.patients.any { it.email.equals(email, true) } -> "An account with this email already exists."
-                else -> null
+                email.isEmpty() -> "Enter your email."
+                else -> Validator.checkProfile(name, phone, age, goal)
+                    ?: if (password.length < 4) "Use a password with at least 4 characters." else null
             }
-
             if (error != null) {
-                b.tvError.text = error
-                b.tvError.visibility = View.VISIBLE
+                showError(error)
                 return@setOnClickListener
             }
 
-            AppData.patients.add(Patient(name, email, phone, password, age!!, goal))
-            Toast.makeText(this, "Account created. Sign in to continue.", Toast.LENGTH_LONG).show()
-            finish()
+            viewModel.register(
+                User(name = name, email = email, phone = phone, password = password, age = age!!, healthGoal = goal)
+            ) { result ->
+                if (result.isSuccess) {
+                    Toast.makeText(this, "Account created. Sign in to continue.", Toast.LENGTH_LONG).show()
+                    finish()
+                } else showError(result.exceptionOrNull()?.message ?: "Could not create account.")
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import com.example.healthieru.data.remote.RetrofitClient
 
 class HealthViewModel(
     private val repository: HealthRepository
@@ -84,6 +85,18 @@ class HealthViewModel(
                 onSuccess()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to save health data."
+            }
+        }
+    }
+    private val _tip = MutableStateFlow<String?>(null)
+    val tip: StateFlow<String?> = _tip
+
+    fun loadTip() {
+        viewModelScope.launch {
+            try {
+                _tip.value = RetrofitClient.adviceApi.getAdvice().slip.advice
+            } catch (e: Exception) {
+                _tip.value = "Tip unavailable. Check your internet connection."
             }
         }
     }

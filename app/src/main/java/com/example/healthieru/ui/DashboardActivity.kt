@@ -1,37 +1,54 @@
 package com.example.healthieru.ui
 
+import android.Manifest
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.healthieru.R
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import com.example.healthieru.HealthierUApp
+import com.example.healthieru.R // <-- ADDED THIS
+import com.example.healthieru.data.SessionManager // <-- ADDED THIS
+import com.example.healthieru.databinding.ActivityDashboardBinding
 import com.example.healthieru.model.HealthReportGenerator
+import com.example.healthieru.viewmodel.HealthViewModel
+import com.example.healthieru.viewmodel.HealthViewModelFactory
+import com.example.healthieru.work.ReminderWorker
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 class DashboardActivity : BaseActivity() {
 
+    private lateinit var b: ActivityDashboardBinding
+    private lateinit var healthViewModel: HealthViewModel
+
+    private val notifPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dashboard)
+        b = ActivityDashboardBinding.inflate(layoutInflater)
+        setContentView(b.root)
 
-        // 1. Initialize all TextViews for the Dashboard
-        val tvGreeting = findViewById<TextView>(R.id.tvGreeting)
-        val tvGoal = findViewById<TextView>(R.id.tvGoal)
-        val tvWeight = findViewById<TextView>(R.id.tvWeight)
-        val tvHeart = findViewById<TextView>(R.id.tvHeart)
-        val tvBmi = findViewById<TextView>(R.id.tvBmi)
+        // 1. Initialize ViewModel (Fixed to pass SessionManager)
+        val repository = (application as HealthierUApp).repository
+        val session = SessionManager(this) // <-- ADDED THIS
+        val factory = HealthViewModelFactory(repository, session) // <-- UPDATED THIS
+        healthViewModel = ViewModelProvider(this, factory).get(HealthViewModel::class.java)
 
-        // 2. Initialize the Expandable Menu Views
+        // 2. Set up the Expandable Menu Logic
         val expandedMenu = findViewById<LinearLayout>(R.id.expandedMenuContainer)
         val btnToggleMenu = findViewById<MaterialButton>(R.id.btnToggleMenu)
 
-        // 3. Set up the Expand/Collapse Button logic
         btnToggleMenu.setOnClickListener {
             if (expandedMenu.visibility == View.GONE) {
                 expandedMenu.visibility = View.VISIBLE
@@ -42,50 +59,56 @@ class DashboardActivity : BaseActivity() {
             }
         }
 
-        // 4. Link the Dashboard Cards to their respective Activities
-        fun link(cardId: Int, target: Class<*>) {
-            findViewById<View>(cardId).setOnClickListener {
-                startActivity(Intent(this, target))
-            }
-        }
+        // 3. Set up Navigation Cards
+        b.cardProfile.setOnClickListener { startActivity(Intent(this, ProfileActivity::class.java)) }
+        b.cardRecord.setOnClickListener { startActivity(Intent(this, RecordDataActivity::class.java)) }
+        b.cardReport.setOnClickListener { startActivity(Intent(this, ReportActivity::class.java)) }
+        b.cardAdvice.setOnClickListener { startActivity(Intent(this, RecommendationsActivity::class.java)) }
+        b.cardHistory.setOnClickListener { startActivity(Intent(this, HistoryActivity::class.java)) }
+        b.cardProgress.setOnClickListener { startActivity(Intent(this, ProgressActivity::class.java)) }
 
-        link(R.id.cardRecord, RecordDataActivity::class.java)
-        link(R.id.cardReport, ReportActivity::class.java)
-        link(R.id.cardAdvice, RecommendationsActivity::class.java) // The new notification card
-        link(R.id.cardProgress, ProgressActivity::class.java)
-        link(R.id.cardHistory, HistoryActivity::class.java)
-        link(R.id.cardProfile, ProfileActivity::class.java)
-
-        // 5. Set up Logout Button
-        findViewById<Button>(R.id.btnLogout).setOnClickListener {
-            viewModel.logout()
+        // 4. Logout Button
+        b.btnLogout.setOnClickListener {
+            healthViewModel.logout()
             goToLogin()
         }
 
-        // 6. Collect Data from ViewModel
+        // 5. Ask for notification permission (Android 13+)
+        if (Build.VERSION.SDK_INT >= 33) {
+            notifPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+
+        // 6. Schedule Daily Reminder using WorkManager
+        val reminder = PeriodicWorkRequestBuilder<ReminderWorker>(24, TimeUnit.HOURS).build()
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "daily_health_reminder",
+            ExistingPeriodicWorkPolicy.KEEP,
+            reminder
+        )
+
+        // 7. Observe Data from Room Database
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // Collect User Info (Greeting and Goal)
                 launch {
-                    viewModel.currentUser.collect { user ->
+                    healthViewModel.currentUser.collect { user ->
                         if (user != null) {
-                            tvGreeting.text = "Hello, ${user.name.substringBefore(' ')}"
-                            tvGoal.text = "Goal: ${user.healthGoal}"
+                            b.tvGreeting.text = "Hello, ${user.name.substringBefore(' ')}"
+                            b.tvGoal.text = "Goal: ${user.healthGoal}"
                         }
                     }
                 }
-                // Collect Health Records (Stats)
+
                 launch {
-                    viewModel.records.collect { list ->
+                    healthViewModel.records.collect { list ->
                         val latest = list.lastOrNull()
                         if (latest == null) {
-                            tvWeight.text = "--"
-                            tvHeart.text = "--"
-                            tvBmi.text = "--"
+                            b.tvWeight.text = "--"
+                            b.tvHeart.text = "--"
+                            b.tvBmi.text = "--"
                         } else {
-                            tvWeight.text = "%.1f kg".format(latest.weightKg)
-                            tvHeart.text = "${latest.heartRate} bpm"
-                            tvBmi.text = "%.1f".format(HealthReportGenerator.bmi(latest.weightKg, latest.heightCm))
+                            b.tvWeight.text = "%.1f kg".format(latest.weightKg)
+                            b.tvHeart.text = "${latest.heartRate} bpm"
+                            b.tvBmi.text = "%.1f".format(HealthReportGenerator.bmi(latest.weightKg, latest.heightCm))
                         }
                     }
                 }

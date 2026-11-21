@@ -6,9 +6,14 @@ import com.example.healthieru.data.SessionManager
 import com.example.healthieru.data.repository.HealthRepository
 
 class HealthViewModelFactory(
-    private val repo: HealthRepository,
+    private val repository: HealthRepository,
     private val session: SessionManager
 ) : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T = HealthViewModel(repo, session) as T
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(HealthViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return HealthViewModel(repository, session) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }

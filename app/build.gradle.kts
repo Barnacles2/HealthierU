@@ -31,7 +31,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    // ADDED: lets screens access views without findViewById
     buildFeatures {
         viewBinding = true
     }
@@ -43,6 +42,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core.ktx)
     implementation(libs.material)
+    implementation("com.google.android.material:material:1.12.0")
 
     // Fragment
     implementation(libs.androidx.fragment.ktx)
@@ -65,8 +65,15 @@ dependencies {
 
     // WorkManager (reminders)
     implementation(libs.androidx.work.runtime.ktx)
+    implementation("androidx.work:work-runtime-ktx:2.9.1")
+
+    // Retrofit (New from other branch)
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test:core:1.6.1")
 }

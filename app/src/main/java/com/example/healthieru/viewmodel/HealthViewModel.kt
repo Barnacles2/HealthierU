@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import com.example.healthieru.data.remote.RetrofitClient
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HealthViewModel(
@@ -94,6 +95,18 @@ class HealthViewModel(
                     fruitVeg = fruitVeg, sleepHours = sleep
                 )
             )
+        }
+    }
+    private val _tip = MutableStateFlow<String?>(null)
+    val tip: StateFlow<String?> = _tip
+
+    fun loadTip() {
+        viewModelScope.launch {
+            try {
+                _tip.value = RetrofitClient.adviceApi.getAdvice().slip.advice
+            } catch (e: Exception) {
+                _tip.value = "Tip unavailable. Check your internet connection."
+            }
         }
     }
 

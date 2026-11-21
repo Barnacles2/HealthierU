@@ -42,6 +42,14 @@
                 android:textColor="@android:color/white"
                 android:textSize="14sp" />
         </LinearLayout>
+        <TextView
+            android:id="@+id/tvTip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Loading tip..."
+            android:textSize="14sp" />
 
         <!-- Stats Cards (Overlapping Header) -->
         <LinearLayout

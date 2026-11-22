@@ -21,8 +21,10 @@ class ReminderWorker(
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
+        // CHANGED: Use getExercises() instead of getAdvice()
         val tip = try {
-            RetrofitClient.adviceApi.getAdvice().slip.advice
+            val response = RetrofitClient.adviceApi.getExercises()
+            response.results.firstOrNull()?.name
         } catch (e: Exception) {
             null
         }

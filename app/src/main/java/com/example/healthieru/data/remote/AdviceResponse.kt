@@ -1,6 +1,15 @@
 package com.example.healthieru.data.remote
 
+import com.google.gson.annotations.SerializedName
 
-data class AdviceResponse(val slip: Slip)
+data class ExerciseResponse(
+    val count: Int,
+    val results: List<Exercise>
+)
 
-data class Slip(val id: Int, val advice: String)
+data class Exercise(
+    val id: Int,
+    val name: String,
+    val description: String,
+    @SerializedName("category") val categoryId: Int
+)

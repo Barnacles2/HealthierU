@@ -4,9 +4,9 @@ import android.Manifest
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -15,14 +15,13 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.healthieru.HealthierUApp
-import com.example.healthieru.R // <-- ADDED THIS
-import com.example.healthieru.data.SessionManager // <-- ADDED THIS
+import com.example.healthieru.R
+import com.example.healthieru.data.SessionManager
 import com.example.healthieru.databinding.ActivityDashboardBinding
 import com.example.healthieru.model.HealthReportGenerator
 import com.example.healthieru.viewmodel.HealthViewModel
 import com.example.healthieru.viewmodel.HealthViewModelFactory
 import com.example.healthieru.work.ReminderWorker
-import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
@@ -39,27 +38,39 @@ class DashboardActivity : BaseActivity() {
         b = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(b.root)
 
-        // 1. Initialize ViewModel (Fixed to pass SessionManager)
+        // 1. Initialize ViewModel
         val repository = (application as HealthierUApp).repository
-        val session = SessionManager(this) // <-- ADDED THIS
-        val factory = HealthViewModelFactory(repository, session) // <-- UPDATED THIS
+        val session = SessionManager(this)
+        val factory = HealthViewModelFactory(repository, session)
         healthViewModel = ViewModelProvider(this, factory).get(HealthViewModel::class.java)
 
-        // 2. Set up the Expandable Menu Logic
-        val expandedMenu = findViewById<LinearLayout>(R.id.expandedMenuContainer)
-        val btnToggleMenu = findViewById<MaterialButton>(R.id.btnToggleMenu)
-
-        btnToggleMenu.setOnClickListener {
-            if (expandedMenu.visibility == View.GONE) {
-                expandedMenu.visibility = View.VISIBLE
-                btnToggleMenu.text = "Show Less"
+        // 2. Expandable Menu Logic
+        b.btnToggleMenu.setOnClickListener {
+            if (b.expandedMenuContainer.isGone) {
+                b.expandedMenuContainer.isVisible = true
+                b.btnToggleMenu.text = getString(R.string.show_less)
             } else {
-                expandedMenu.visibility = View.GONE
-                btnToggleMenu.text = "View Progress & History"
+                b.expandedMenuContainer.isVisible = false
+                b.btnToggleMenu.text = getString(R.string.view_progress_history)
             }
         }
 
-        // 3. Set up Navigation Cards
+        // 3. Load the Exercise Tip from the API
+        healthViewModel.loadTip()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                healthViewModel.tip.collect { tip ->
+                    // Display "Exercise: Barbell Bench Press"
+                    b.tvTip.text = if (tip != null) {
+                        getString(R.string.exercise_tip_format, tip)
+                    } else {
+                        getString(R.string.loading)
+                    }
+                }
+            }
+        }
+
+        // 4. Navigation Cards
         b.cardProfile.setOnClickListener { startActivity(Intent(this, ProfileActivity::class.java)) }
         b.cardRecord.setOnClickListener { startActivity(Intent(this, RecordDataActivity::class.java)) }
         b.cardReport.setOnClickListener { startActivity(Intent(this, ReportActivity::class.java)) }
@@ -67,18 +78,18 @@ class DashboardActivity : BaseActivity() {
         b.cardHistory.setOnClickListener { startActivity(Intent(this, HistoryActivity::class.java)) }
         b.cardProgress.setOnClickListener { startActivity(Intent(this, ProgressActivity::class.java)) }
 
-        // 4. Logout Button
+        // 5. Logout Button
         b.btnLogout.setOnClickListener {
             healthViewModel.logout()
             goToLogin()
         }
 
-        // 5. Ask for notification permission (Android 13+)
+        // 6. Ask for notification permission
         if (Build.VERSION.SDK_INT >= 33) {
             notifPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
 
-        // 6. Schedule Daily Reminder using WorkManager
+        // 7. Schedule Daily Reminder
         val reminder = PeriodicWorkRequestBuilder<ReminderWorker>(24, TimeUnit.HOURS).build()
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             "daily_health_reminder",
@@ -86,14 +97,14 @@ class DashboardActivity : BaseActivity() {
             reminder
         )
 
-        // 7. Observe Data from Room Database
+        // 8. Observe Data from Room Database
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     healthViewModel.currentUser.collect { user ->
                         if (user != null) {
-                            b.tvGreeting.text = "Hello, ${user.name.substringBefore(' ')}"
-                            b.tvGoal.text = "Goal: ${user.healthGoal}"
+                            b.tvGreeting.text = getString(R.string.greeting_format, user.name.substringBefore(' '))
+                            b.tvGoal.text = getString(R.string.goal_format, user.healthGoal)
                         }
                     }
                 }
@@ -106,9 +117,9 @@ class DashboardActivity : BaseActivity() {
                             b.tvHeart.text = "--"
                             b.tvBmi.text = "--"
                         } else {
-                            b.tvWeight.text = "%.1f kg".format(latest.weightKg)
-                            b.tvHeart.text = "${latest.heartRate} bpm"
-                            b.tvBmi.text = "%.1f".format(HealthReportGenerator.bmi(latest.weightKg, latest.heightCm))
+                            b.tvWeight.text = getString(R.string.weight_format, latest.weightKg)
+                            b.tvHeart.text = getString(R.string.heart_format, latest.heartRate)
+                            b.tvBmi.text = getString(R.string.bmi_format, HealthReportGenerator.bmi(latest.weightKg, latest.heightCm))
                         }
                     }
                 }

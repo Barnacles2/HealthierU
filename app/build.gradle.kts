@@ -70,6 +70,8 @@ dependencies {
     // Retrofit (New from other branch)
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    // Confetti for goal celebration
+    implementation("nl.dionsegijn:konfetti-xml:2.0.2")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)

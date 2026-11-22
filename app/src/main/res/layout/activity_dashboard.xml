@@ -42,14 +42,6 @@
                 android:textColor="@android:color/white"
                 android:textSize="14sp" />
         </LinearLayout>
-        <TextView
-            android:id="@+id/tvTip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:text="Loading tip..."
-            android:textSize="14sp" />
 
         <!-- Stats Cards (Overlapping Header) -->
         <LinearLayout
@@ -121,6 +113,20 @@
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
+        <!-- MOVED: The Exercise Tip is now safely below the stats cards -->
+        <TextView
+            android:id="@+id/tvTip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="16dp"
+            android:background="#E8F5E9"
+            android:padding="12dp"
+            android:text="Loading..."
+            android:textColor="#2A9D8F"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
         <!-- Menu Section -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -137,7 +143,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <!-- NOTIFICATION STYLE CARD: Recommendations (Always Visible) -->
+            <!-- NOTIFICATION STYLE CARD: Recommendations -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardAdvice"
                 android:layout_width="match_parent"
@@ -151,12 +157,10 @@
                 app:strokeColor="#FFB74D"
                 app:strokeWidth="1dp">
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
-                    <!-- Emoji with a badge look -->
                     <FrameLayout
                         android:layout_width="40dp"
                         android:layout_height="40dp">
                         <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:text="🔔" android:textSize="24sp" />
-                        <!-- Small red dot for notification effect -->
                         <View
                             android:layout_width="10dp"
                             android:layout_height="10dp"
@@ -235,7 +239,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- COLLAPSIBLE SECTION (Now only contains Progress and History) -->
+            <!-- COLLAPSIBLE SECTION -->
             <LinearLayout
                 android:id="@+id/expandedMenuContainer"
                 android:layout_width="match_parent"
@@ -243,7 +247,6 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <!-- Card: Progress -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardProgress"
                     android:layout_width="match_parent"
@@ -264,7 +267,6 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Card: History -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardHistory"
                     android:layout_width="match_parent"
@@ -293,7 +295,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="View Progress &amp; History"
+                android:text="@string/view_progress_history"
                 android:textColor="#2A9D8F" />
 
             <!-- Logout Button -->
@@ -303,7 +305,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="16dp"
-                android:text="Sign out"
+                android:text="@string/btn_sign_out"
                 android:textColor="#EF233C"
                 app:cornerRadius="12dp"
                 app:strokeColor="#EF233C" />

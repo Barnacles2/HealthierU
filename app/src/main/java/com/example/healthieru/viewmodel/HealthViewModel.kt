@@ -6,6 +6,7 @@ import com.example.healthieru.data.SessionManager
 import com.example.healthieru.data.local.DoctorNote
 import com.example.healthieru.data.local.HealthRecord
 import com.example.healthieru.data.local.User
+import com.example.healthieru.data.remote.RetrofitClient
 import com.example.healthieru.data.repository.HealthRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +17,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import com.example.healthieru.data.remote.RetrofitClient
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HealthViewModel(
@@ -97,15 +97,21 @@ class HealthViewModel(
             )
         }
     }
+
+    // ---------- Daily Exercise Tip (wger API) ----------
     private val _tip = MutableStateFlow<String?>(null)
     val tip: StateFlow<String?> = _tip
 
     fun loadTip() {
         viewModelScope.launch {
             try {
-                _tip.value = RetrofitClient.adviceApi.getAdvice().slip.advice
+                // Fetch 1 random exercise in English
+                val response = RetrofitClient.adviceApi.getExercises()
+                val exerciseName = response.results.firstOrNull()?.name
+                _tip.value = exerciseName ?: "Stay active today!"
             } catch (e: Exception) {
-                _tip.value = "Tip unavailable. Check your internet connection."
+                _tip.value = "Could not load exercise. Check your internet."
+                e.printStackTrace()
             }
         }
     }
@@ -135,12 +141,12 @@ class HealthViewModel(
         addStructuredNote(patientId, category, text, null)
     }
 
-    // UPDATED: Builds the DoctorNote directly without needing the Doctor class
+    // Builds the DoctorNote directly without needing the Doctor class
     fun addStructuredNote(patientId: Long, category: String, text: String, structuredData: String?) {
         viewModelScope.launch {
             val note = DoctorNote(
                 userId = patientId,
-                author = "Dr. Amina Otieno", // You can replace this with a dynamic variable if you have one
+                author = "Dr. Amina Otieno",
                 category = category,
                 text = text,
                 date = System.currentTimeMillis(),

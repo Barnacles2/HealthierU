@@ -250,6 +250,25 @@ class PatientDetailActivity : BaseActivity() {
             findViewById<TextView>(R.id.tvTrend).text =
                 if (trend == null) "Not enough records to show a trend."
                 else "${ProgressAnalyzer.describeChange(trend.change, "kg")} since ${formatDate(records.first().date)}, ${records.size} records"
+
+            // --- GOAL ACHIEVED CHECK FOR DOCTOR ---
+            val u = summaryUser
+            if (u != null) {
+                val startWeight = records.first().weightKg
+                val latestWeight = records.last().weightKg
+                val change = latestWeight - startWeight
+                val goalStr = u.healthGoal.lowercase()
+                val goalAmount = goalStr.filter { it.isDigit() || it == '.' }.toDoubleOrNull() ?: 0.0
+
+                val isGoalMet = when {
+                    goalStr.contains("lose") && goalAmount > 0 -> change <= -goalAmount
+                    goalStr.contains("gain") && goalAmount > 0 -> change >= goalAmount
+                    else -> false
+                }
+
+                val badge = findViewById<TextView>(R.id.tvGoalReachedBadge)
+                badge.visibility = if (isGoalMet) View.VISIBLE else View.GONE
+            }
         }
     }
 

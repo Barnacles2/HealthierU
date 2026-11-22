@@ -38,6 +38,21 @@
                 android:text="Goal: --"
                 android:textColor="#6C757D"
                 android:textSize="14sp" />
+
+            <!-- GOAL ACHIEVED BADGE (Hidden by default) -->
+            <TextView
+                android:id="@+id/tvGoalReachedBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="#E8F5E9"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:text="🎉 Goal Achieved!"
+                android:textColor="#2A9D8F"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
         </LinearLayout>
 
         <!-- Chart Section -->
@@ -105,7 +120,6 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <!-- Category Selection -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
